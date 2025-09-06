@@ -8,16 +8,25 @@
     {
         if (args.Length > 0)
         {
-            if (args[0] == "s")
+            try
             {
-                string[] inputs = File.ReadAllLines(args[1]);
-                HandleScript(inputs);
+                if (args[0] == "s")
+                {
+                    string[] inputs = File.ReadAllLines(args[1]);
+                    HandleScript(inputs);
+                }
+                else if (args[0] == "x")
+                    HandleScript(args[1..args.Length]);
+                else if (args[0] == "l")
+                    foreach (string line in File.ReadAllLines(args[1]))
+                        buffer.Add(line);
             }
-            else if (args[0] == "x")
-                HandleScript(args[1..args.Length]);
-            else if (args[0] == "l")
-                foreach (string line in File.ReadAllLines(args[0]))
-                    buffer.Add(line);
+            catch
+            {
+                // Reset the buffer if any error occurs.
+                Console.WriteLine("?");
+                buffer = [];
+            }
         }
         while (true)
         {
