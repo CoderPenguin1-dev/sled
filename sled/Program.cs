@@ -8,15 +8,16 @@
     {
         if (args.Length > 0)
         {
-            if (args[0] == "-s")
+            if (args[0] == "s")
             {
                 string[] inputs = File.ReadAllLines(args[1]);
                 HandleScript(inputs);
             }
-            if (args[0] == "-x")
+            else if (args[0] == "x")
                 HandleScript(args[1..args.Length]);
-            else foreach (string line in File.ReadAllLines(args[0]))
-                buffer.Add(line);
+            else if (args[0] == "l")
+                foreach (string line in File.ReadAllLines(args[0]))
+                    buffer.Add(line);
         }
         while (true)
         {
@@ -167,8 +168,8 @@
             case "?":
                 Console.WriteLine($"Sharp Line-based EDitor v{typeof(Program).Assembly.GetName().Version}\n");
                 Console.WriteLine("Command Mode allows you to type in the below commands. Append Mode allows you to add to the buffer.");
-                Console.WriteLine("Command Mode is the default mode and is indicated by a : in the input field.");
-                Console.WriteLine("You can exit Append Mode by entering a . into the buffer. This will not be added into the buffer.\n");
+                Console.WriteLine("Command Mode is the default mode and is indicated by a colon (:) in the input field.");
+                Console.WriteLine("You can exit Append Mode by entering a single period/full-stop (.).");
                 Console.WriteLine("q - Closes SLED.");
                 Console.WriteLine("w [filepath] - Write buffer to specifced file. Will create file if it doesn't exist.");
                 Console.WriteLine("wq [filepath] - Equivilent to w and q.");
