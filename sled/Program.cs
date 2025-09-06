@@ -20,6 +20,7 @@
                 else if (args[0] == "l")
                     foreach (string line in File.ReadAllLines(args[1]))
                         buffer.Add(line);
+                else throw new Exception();
             }
             catch
             {
