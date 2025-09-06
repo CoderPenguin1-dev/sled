@@ -5,6 +5,11 @@
     <TargetFramework>net9.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <AssemblyName>sled</AssemblyName>
+    <Version>1.0.0</Version>
+    <Authors>CoderPenguin1</Authors>
+    <Company>CoderPenguin1</Company>
+    <Product>Sharp Line-based EDitor</Product>
   </PropertyGroup>
 
 </Project>
