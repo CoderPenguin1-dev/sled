@@ -1,10 +1,10 @@
 # Sharp Line-based EDitor
 
-SLED is a CLI line-based editor, similar to UNIX's ed.
+sled is a CLI line-based editor, similar to UNIX's ed.
 
 The main reason I made this was for fun, but I'm currently using it for Minty Launcher's publish script.
 
-There is basic script support for SLED.
+There is basic script support for sled.
 
 # General Usage
 You can see command documentation by typing in `?`.
@@ -54,3 +54,4 @@ Build & Run Debug binary:
 ```
 dotnet run
 ```
+It should open up afterwards. The build will be in `sled\bin\Debug\net9.0`.
