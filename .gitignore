@@ -4,7 +4,6 @@
 ## Get latest from https://github.com/github/gitignore/blob/master/VisualStudio.gitignore
 
 # Publish Files
-# Publish Files
 publish.bat
 sled-FrameworkDependent-win64.zip
 sled-FrameworkDependent-win32.zip
