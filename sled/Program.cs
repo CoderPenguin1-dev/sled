@@ -182,7 +182,7 @@
                 Console.WriteLine("You can exit Append Mode by entering a single period/full-stop (.).");
                 Console.WriteLine("q - Closes SLED.");
                 Console.WriteLine("w [filepath] - Write buffer to specifced file. Will create file if it doesn't exist.");
-                Console.WriteLine("wq [filepath] - Equivilent to w and q.");
+                Console.WriteLine("wq [filepath] - Equivalent to w and q.");
                 Console.WriteLine("b - Toggle Backup. Default is off/false.");
                 Console.WriteLine("a - Enter Append Mode.");
                 Console.WriteLine("a [line] [content] - Append content to the end of the line.");
