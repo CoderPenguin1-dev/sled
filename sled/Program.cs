@@ -181,8 +181,8 @@
                 Console.WriteLine("Command Mode is the default mode and is indicated by a colon (:) in the input field.");
                 Console.WriteLine("You can exit Append Mode by entering a single period/full-stop (.).");
                 Console.WriteLine("q - Closes sled.");
-                Console.WriteLine("w [filepath] - Write buffer to specifced file. Will create file if it doesn't exist.");
-                Console.WriteLine("wq [filepath] - Equivalent to w and q.");
+                Console.WriteLine("w [file path] - Write buffer to specifced file. Will create file if it doesn't exist.");
+                Console.WriteLine("wq [file path] - Equivalent to w and q.");
                 Console.WriteLine("b - Toggle Backup. Default is off/false.");
                 Console.WriteLine("a - Enter Append Mode.");
                 Console.WriteLine("a [line] [content] - Append content to the end of the line.");
@@ -192,7 +192,7 @@
                 Console.WriteLine("d [from line] [to line] - Deletes the specifed line range of lines.");
                 Console.WriteLine("r [line] [content] - Replace line in buffer with specified content.");
                 Console.WriteLine("s [line] [old content] [new content] - Replace all occurances of the old content with the new content in the specified line in the buffer.");
-                Console.WriteLine("c [filepath] - Overwrite buffer with specifed file.");
+                Console.WriteLine("c [file path] - Overwrite buffer with specifed file.");
                 Console.WriteLine("l - List buffer.");
                 Console.WriteLine("l [line or . for line 1] - Print specifed line from the buffer.");
                 Console.WriteLine("l [line or . for line 1] [line or . for all lines up to EOF] - Print specified range of lines from the buffer.");
