@@ -107,7 +107,7 @@
                 break;
 
             case "w":
-                File.WriteAllLines(CombineFrom(inputs, 1), buffer); break;
+                File.WriteAllLines(CombineFrom(inputs, 1).Replace("\"", null), buffer); break;
 
             case "l":
                 if (inputs.Length == 2)
@@ -148,12 +148,12 @@
                 break;
 
             case "wq":
-                File.WriteAllLines(CombineFrom(inputs, 1), buffer);
+                File.WriteAllLines(CombineFrom(inputs, 1).Replace("\"", null), buffer);
                 Environment.Exit(0);
                 break;
 
             case "c":
-                buffer = [.. File.ReadAllLines(inputs[1])]; break;
+                buffer = [.. File.ReadAllLines(CombineFrom(inputs, 1).Replace("\"", null))]; break;
 
             case "r":
                 buffer[int.Parse(inputs[1]) - 1] = CombineFrom(inputs, 2); break;
@@ -180,7 +180,7 @@
                 Console.WriteLine("Command Mode allows you to type in the below commands. Append Mode allows you to add to the buffer.");
                 Console.WriteLine("Command Mode is the default mode and is indicated by a colon (:) in the input field.");
                 Console.WriteLine("You can exit Append Mode by entering a single period/full-stop (.).");
-                Console.WriteLine("q - Closes SLED.");
+                Console.WriteLine("q - Closes sled.");
                 Console.WriteLine("w [filepath] - Write buffer to specifced file. Will create file if it doesn't exist.");
                 Console.WriteLine("wq [filepath] - Equivalent to w and q.");
                 Console.WriteLine("b - Toggle Backup. Default is off/false.");
@@ -189,11 +189,11 @@
                 Console.WriteLine("i [line] - Insert newline on specificed line in the buffer.");
                 Console.WriteLine("i [line] [content] Insert content on specified line in the buffer.");
                 Console.WriteLine("d [line] - Delete line from buffer.");
-                Console.WriteLine("d [from line] [to line] - Deletes the specifed line range of lines");
+                Console.WriteLine("d [from line] [to line] - Deletes the specifed line range of lines.");
                 Console.WriteLine("r [line] [content] - Replace line in buffer with specified content.");
-                Console.WriteLine("s [line] [old content] [new content] - Replace all occurances of the old content with the new content in the specified line in the buffer");
+                Console.WriteLine("s [line] [old content] [new content] - Replace all occurances of the old content with the new content in the specified line in the buffer.");
                 Console.WriteLine("c [filepath] - Overwrite buffer with specifed file.");
-                Console.WriteLine("l - List buffer");
+                Console.WriteLine("l - List buffer.");
                 Console.WriteLine("l [line or . for line 1] - Print specifed line from the buffer.");
                 Console.WriteLine("l [line or . for line 1] [line or . for all lines up to EOF] - Print specified range of lines from the buffer.");
                 Console.WriteLine("f [0 for case-insensitive or 1 for case-sensitive] [content] - Find and print the line numbers that contain the content.");
