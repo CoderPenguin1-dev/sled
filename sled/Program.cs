@@ -8,6 +8,7 @@ public class Program
     public static void Main(string[] args)
     {
         #region Config
+        // Check if any config file exists. Use defaults otherwise.
         if (ConfigFileReader.InitConfigFile())
         {
             try
@@ -38,7 +39,6 @@ public class Program
         {
             // Check if env variable SLED_BACKUP_FILE_PATH exists.
             string backupFilePathEnv = Environment.GetEnvironmentVariable("SLED_BACKUP_FILE_PATH");
-            Console.WriteLine($"Backup FilePath: {backupFilePathEnv}");
             if (backupFilePathEnv != null)
                 Config.BackupFilePath = backupFilePathEnv;
         }
