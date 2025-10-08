@@ -12,6 +12,21 @@ sled-SelfContained-win32.zip
 sled-FrameworkDependent-amd64.tar
 sled-SelfContained-amd64.tar
 
+# Default ignored files
+/shelf/
+/workspace.xml
+# Rider ignored files
+/modules.xml
+/contentModel.xml
+/.idea.sled.iml
+/projectSettingsUpdater.xml
+# Editor-based HTTP Client requests
+/httpRequests/
+# Datasource local storage ignored files
+/dataSources/
+/dataSources.local.xml
+/.idea/
+
 # User-specific files
 *.rsuser
 *.suo
