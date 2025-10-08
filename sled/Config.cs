@@ -28,7 +28,7 @@ internal static class Config
     internal static string BackupFilePath = string.Empty;
     
     /// <summary>
-    /// 
+    /// Show line numbers when using the list (l) command or when being listed by ListBufferOnLoad or ListBufferOnCopy.
     /// </summary>
     internal static bool ShowLineNumbersOnList = true;
 }
