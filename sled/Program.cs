@@ -34,8 +34,14 @@ public class Program
             _appendModeEnabled = true;
         if (Config.BackupEnabled)
             Console.WriteLine($"Backup Buffer: {Config.BackupEnabled}");
-        Console.WriteLine(Config.BackupFilePath);
-        
+        if (OperatingSystem.IsOSPlatform("Linux"))
+        {
+            // Check if env variable SLED_BACKUP_FILE_PATH exists.
+            string backupFilePathEnv = Environment.GetEnvironmentVariable("SLED_BACKUP_FILE_PATH");
+            Console.WriteLine($"Backup FilePath: {backupFilePathEnv}");
+            if (backupFilePathEnv != null)
+                Config.BackupFilePath = backupFilePathEnv;
+        }
         #endregion
         if (args.Length > 0)
         {
@@ -96,7 +102,7 @@ public class Program
         {
             _buffer.Add(input);
             if (Config.BackupEnabled)
-                File.WriteAllLines("sled.bak", _buffer);
+                File.WriteAllLines($"{Config.BackupFilePath}sled.bak", _buffer);
         }
     }
 

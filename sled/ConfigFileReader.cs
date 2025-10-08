@@ -49,9 +49,7 @@ internal static class ConfigFileReader
             if (line.StartsWith('#'))
                 continue;
             if (line.StartsWith(key))
-            {
                 return line.Split(" ")[1];
-            }
         }
         return string.Empty;
     }
