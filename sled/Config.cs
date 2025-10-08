@@ -3,7 +3,7 @@ namespace sled;
 internal static class Config
 {
     /// <summary>
-    /// Enables the use of the buffer backup file. Can be changed during runtime.
+    /// Enables the use of the buffer backup file. Can be changed during runtime via the backup (b) command.
     /// </summary>
     internal static bool BackupEnabled = false;
     /// <summary>
@@ -18,6 +18,8 @@ internal static class Config
     /// Enables Append Mode when starting sled. Ignored when running from a script.
     /// </summary>
     internal static bool AppendModeOnStart = false;
-
+    /// <summary>
+    /// Changes the path where sled.bak is saved. Must be an absolute path.
+    /// </summary>
     internal static string BackupFilePath = string.Empty;
 }

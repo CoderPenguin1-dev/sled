@@ -33,8 +33,6 @@ public class Program
 
         if (Config.AppendModeOnStart)
             _appendModeEnabled = true;
-        if (Config.BackupEnabled)
-            Console.WriteLine($"Backup Buffer: {Config.BackupEnabled}");
         if (OperatingSystem.IsOSPlatform("Linux"))
         {
             // Check if env variable SLED_BACKUP_FILE_PATH exists.
