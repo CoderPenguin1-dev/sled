@@ -8,6 +8,7 @@ There is basic script support for sled.
 
 # General Usage
 You can see command documentation by typing in `?`.
+Read CONFIG.md learn how to configure sled.
 ## Modes
 s - Load and execute commands from a file.
 

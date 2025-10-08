@@ -9,17 +9,18 @@
    * Overrides the BackupFilePath config.
 
 ## Configuration File
+Can use #'s to denote comments.
+**Layout:** `KEY PARAMETER`
+
 ### Config File Locations
 * sled.conf
   * In the working directory.
 * ~/.config/sled.conf
-  * Linux only
+  * Linux only.
 * %APPDATA%/sled.conf
-  * Windows Only
+  * Windows only.
 
 ### Config Options
-**Layout:** `KEY PARAMETER`
-
 * BackupEnabled [True/False] False
   * Sets if the backup is enabled on startup.
 * BackupFilePath [Absolute Path To Folder] Working Directory
