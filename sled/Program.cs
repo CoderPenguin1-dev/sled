@@ -1,13 +1,42 @@
 ﻿namespace sled;
 
-class Program
+public class Program
 {
-    static List<string> _buffer = [];
-    static bool appendMode = false;
-    static bool backupEnabled = false;
+    private static List<string> _buffer = [];
+    private static bool _appendModeEnabled = false;
 
     public static void Main(string[] args)
     {
+        #region Config
+        if (ConfigFileReader.InitConfigFile())
+        {
+            try
+            {
+                if (ConfigFileReader.GetKeyValue("BackupEnabled") != string.Empty)
+                    Config.BackupEnabled = bool.Parse(ConfigFileReader.GetKeyValue("BackupEnabled"));
+                if (ConfigFileReader.GetKeyValue("ListBufferOnCopy") != string.Empty)
+                    Config.ListBufferOnCopy = bool.Parse(ConfigFileReader.GetKeyValue("ListBufferOnCopy"));
+                if (ConfigFileReader.GetKeyValue("ListBufferOnLoad") != string.Empty)
+                    Config.ListBufferOnLoad = bool.Parse(ConfigFileReader.GetKeyValue("ListBufferOnLoad"));
+                if (ConfigFileReader.GetKeyValue("AppendModeOnStart") != string.Empty)
+                    Config.AppendModeOnStart = bool.Parse(ConfigFileReader.GetKeyValue("AppendModeOnStart"));
+                if (ConfigFileReader.GetKeyValue("BackupFilePath") != string.Empty)
+                    Config.BackupFilePath = ConfigFileReader.GetKeyValue("BackupFilePath");
+            }
+            catch
+            {
+                Console.WriteLine("Error in config file.");
+                Environment.Exit(1);
+            }
+        }
+
+        if (Config.AppendModeOnStart)
+            _appendModeEnabled = true;
+        if (Config.BackupEnabled)
+            Console.WriteLine($"Backup Buffer: {Config.BackupEnabled}");
+        Console.WriteLine(Config.BackupFilePath);
+        
+        #endregion
         if (args.Length > 0)
         {
             try
@@ -18,10 +47,16 @@ class Program
                     HandleScript(inputs);
                 }
                 else if (args[0] == "x")
-                    HandleScript(args[1..args.Length]);
+                    HandleScript(args[1..]);
                 else if (args[0] == "l")
+                {
                     foreach (string line in File.ReadAllLines(args[1]))
                         _buffer.Add(line);
+                    if (Config.ListBufferOnLoad)
+                        for (int i = 0; i < _buffer.Count; i++)
+                            Console.WriteLine($"[{i + 1:D4}]~" + _buffer[i]);
+                }
+                
                 else throw new Exception();
             }
             catch
@@ -31,17 +66,18 @@ class Program
                 _buffer = [];
             }
         }
+        
         while (true)
         {
-            if (!appendMode) Console.Write(':');
+            if (!_appendModeEnabled) Console.Write(':');
             string input = Console.ReadLine();
-            if (appendMode)
+            if (_appendModeEnabled)
                 HandleAppendMode(input);
             else try
                 {
                     HandleInput(input);
-                    if (backupEnabled)
-                        File.WriteAllLines("sled.bak", _buffer);
+                    if (Config.BackupEnabled)
+                        File.WriteAllLines($"{Config.BackupFilePath}sled.bak", _buffer);
                 }
                 catch { Console.WriteLine('?'); }
         }
@@ -55,25 +91,27 @@ class Program
 
     static void HandleAppendMode(string input)
     {
-        if (input == ".") appendMode = false;
+        if (input == ".") _appendModeEnabled = false;
         else
         {
             _buffer.Add(input);
-            if (backupEnabled)
+            if (Config.BackupEnabled)
                 File.WriteAllLines("sled.bak", _buffer);
         }
     }
 
     static void HandleScript(string[] script)
     {
+        // Make sure AppendModeOnStart can never take effect.
+        _appendModeEnabled = false;
         foreach (string line in script)
         {
-            if (appendMode)
+            if (_appendModeEnabled)
                 HandleAppendMode(line);
             else try
                 {
                     HandleInput(line);
-                    if (backupEnabled)
+                    if (Config.BackupEnabled)
                         File.WriteAllLines("sled.bak", _buffer);
                 }
                 catch { Console.WriteLine('?'); break; }
@@ -130,7 +168,7 @@ class Program
                 break;
 
             case "q":
-                if (File.Exists("sled.bak")) File.Delete("sled.bak");
+                if (File.Exists($"{Config.BackupFilePath}sled.bak")) File.Delete($"{Config.BackupFilePath}sled.bak");
                 Environment.Exit(0); break;
 
             case "a":
@@ -141,21 +179,26 @@ class Program
                     _buffer[int.Parse(inputs[1]) - 1] = line;
                 }
                 else
-                    appendMode = true;
+                    _appendModeEnabled = true;
                 break;
 
             case "b":
-                backupEnabled = !backupEnabled;
-                Console.WriteLine($"Backup Buffer: {backupEnabled}");
+                Config.BackupEnabled = !Config.BackupEnabled;
+                Console.WriteLine($"Backup Buffer: {Config.BackupEnabled}");
                 break;
 
             case "wq":
+                if (File.Exists($"{Config.BackupFilePath}sled.bak")) File.Delete($"{Config.BackupFilePath}sled.bak");
                 File.WriteAllLines(CombineFrom(inputs, 1).Replace("\"", null), _buffer);
                 Environment.Exit(0);
                 break;
 
             case "c":
-                _buffer = [.. File.ReadAllLines(CombineFrom(inputs, 1).Replace("\"", null))]; break;
+                _buffer = [.. File.ReadAllLines(CombineFrom(inputs, 1).Replace("\"", null))];
+                if (Config.ListBufferOnCopy)
+                    for (int i = 0; i < _buffer.Count; i++)
+                        Console.WriteLine($"[{i + 1:D4}]~" + _buffer[i]);
+                break;
 
             case "r":
                 _buffer[int.Parse(inputs[1]) - 1] = CombineFrom(inputs, 2); break;
