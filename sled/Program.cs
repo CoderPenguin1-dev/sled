@@ -23,6 +23,8 @@ public class Program
                     Config.AppendModeOnStart = bool.Parse(ConfigFileReader.GetKeyValue("AppendModeOnStart"));
                 if (ConfigFileReader.GetKeyValue("BackupFilePath") != string.Empty)
                     Config.BackupFilePath = ConfigFileReader.GetKeyValue("BackupFilePath");
+                if (ConfigFileReader.GetKeyValue("ShowLineNumbersOnList") != string.Empty)
+                    Config.ShowLineNumbersOnList = bool.Parse(ConfigFileReader.GetKeyValue("ShowLineNumbersOnList"));
             }
             catch
             {
@@ -58,7 +60,7 @@ public class Program
                         _buffer.Add(line);
                     if (Config.ListBufferOnLoad)
                         for (int i = 0; i < _buffer.Count; i++)
-                            Console.WriteLine($"[{i + 1:D4}]~" + _buffer[i]);
+                            ListLineFromIndex(_buffer.ToArray(), i);
                 }
                 
                 else throw new Exception();
@@ -87,13 +89,21 @@ public class Program
         }
     }
 
-    static string CombineFrom(string[] array, int fromIndex)
+    private static string CombineFrom(string[] array, int fromIndex)
     {
         string output = string.Join(" ", array[fromIndex..array.Length]);
         return output;
     }
+    
+    private static void ListLineFromIndex(string[] buffer, int index)
+    {
+        if (Config.ShowLineNumbersOnList)
+            Console.WriteLine($"[{index+1:D4}]~" + buffer[index]);
+        else  Console.Write(buffer[index]);
+    }
 
-    static void HandleAppendMode(string input)
+    #region  Handlers
+    private static void HandleAppendMode(string input)
     {
         if (input == ".") _appendModeEnabled = false;
         else
@@ -104,7 +114,7 @@ public class Program
         }
     }
 
-    static void HandleScript(string[] script)
+    private static void HandleScript(string[] script)
     {
         // Make sure AppendModeOnStart can never take effect.
         _appendModeEnabled = false;
@@ -122,9 +132,9 @@ public class Program
         }
     }
 
-    static void HandleInput(string input)
+    private static void HandleInput(string input)
     {
-                string[] inputs = input.Split(" ");
+        string[] inputs = input.Split(" ");
         switch (inputs[0].ToLower())
         {
             default:
@@ -157,18 +167,20 @@ public class Program
                 if (inputs.Length == 2)
                 {
                     if (inputs[1] == ".") inputs[1] = "1";
-                    Console.WriteLine($"[{int.Parse(inputs[1]):D4}]~" + _buffer[int.Parse(inputs[1]) - 1]);
+                    ListLineFromIndex(_buffer.ToArray(), int.Parse(inputs[1]) - 1);
                 }
                 else if (inputs.Length == 3)
                 {
                     if (inputs[1] == ".") inputs[1] = "1";
                     if (inputs[2] == ".") inputs[2] = _buffer.Count.ToString();
                     for (int i = int.Parse(inputs[1]) - 1; i < int.Parse(inputs[2]); i++)
-                        Console.WriteLine($"[{i + 1:D4}]~" + _buffer[i]);
+                        ListLineFromIndex(_buffer.ToArray(), i);
                 }
                 else
                     for (int i = 0; i < _buffer.Count; i++)
-                        Console.WriteLine($"[{i + 1:D4}]~" + _buffer[i]);
+                    {
+                        ListLineFromIndex(_buffer.ToArray(), i);
+                    }
                 break;
 
             case "q":
@@ -200,8 +212,10 @@ public class Program
             case "c":
                 _buffer = [.. File.ReadAllLines(CombineFrom(inputs, 1).Replace("\"", null))];
                 if (Config.ListBufferOnCopy)
+                {
                     for (int i = 0; i < _buffer.Count; i++)
-                        Console.WriteLine($"[{i + 1:D4}]~" + _buffer[i]);
+                        ListLineFromIndex(_buffer.ToArray(), i);
+                }
                 break;
 
             case "r":
@@ -230,8 +244,8 @@ public class Program
                 Console.WriteLine("Command Mode is the default mode and is indicated by a colon (:) in the input field.");
                 Console.WriteLine("You can exit Append Mode by entering a single period/full-stop (.).");
                 Console.WriteLine("q - Closes sled.");
-                Console.WriteLine("w [file path] - Write buffer to specified file. Will create file if it doesn't exist.");
-                Console.WriteLine("wq [file path] - Equivalent to w and q.");
+                Console.WriteLine("w [absolute file path] - Write buffer to specified file. Will create file if it doesn't exist.");
+                Console.WriteLine("wq [absolute file path] - Equivalent to w and q.");
                 Console.WriteLine("b - Toggle Backup. Default is off/false.");
                 Console.WriteLine("a - Enter Append Mode.");
                 Console.WriteLine("a [line] [content] - Append content to the end of the line.");
@@ -241,7 +255,7 @@ public class Program
                 Console.WriteLine("d [from line] [to line] - Deletes the specified line range of lines.");
                 Console.WriteLine("r [line] [content] - Replace line in buffer with specified content.");
                 Console.WriteLine("s [line] [old content] [new content] - Replace all occurrences of the old content with the new content in the specified line in the buffer.");
-                Console.WriteLine("c [file path] - Overwrite buffer with specified file.");
+                Console.WriteLine("c [absolute file path] - Overwrite buffer with specified file.");
                 Console.WriteLine("l - List buffer.");
                 Console.WriteLine("l [line or . for line 1] - Print specified line from the buffer.");
                 Console.WriteLine("l [line or . for line 1] [line or . for all lines up to EOF] - Print specified range of lines from the buffer.");
@@ -249,4 +263,5 @@ public class Program
                 break;
         }
     }
+    #endregion
 }

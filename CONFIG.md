@@ -31,3 +31,6 @@ Can use #'s to denote comments.
   * Lists the buffer when loading a file using the load (l) mode.
 * AppendModeOnStart [True/False] False
   * Starts sled in append mode instead of command mode.
+  * Ignored when running a script with either script mode (s and x).
+* ShowLineNumbersOnList [True/False] True
+  * Show line numbers when using the list (l) command or when being listed by ListBufferOnLoad or ListBufferOnCopy.

@@ -8,7 +8,7 @@ internal static class ConfigFileReader
     {
         string configFilePath = string.Empty;
 
-        // Goes in this order of "power"
+        // Goes in this order of "power" in order of most to least:
         // AppData Folder (Windows) or SLED_CONFIG_FILE (Linux) -> ~/.config/sled.conf (Linux) -> sled.conf
         #region Check Config Paths
         if (File.Exists("sled.conf"))
@@ -41,6 +41,7 @@ internal static class ConfigFileReader
         _configFile = File.ReadAllLines(configFilePath);
         return true;
     }
+    
     internal static string GetKeyValue(string key)
     {
         foreach (string line in _configFile)
