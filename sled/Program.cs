@@ -1,6 +1,8 @@
-﻿class Program
+﻿namespace sled;
+
+class Program
 {
-    static List<string> buffer = [];
+    static List<string> _buffer = [];
     static bool appendMode = false;
     static bool backupEnabled = false;
 
@@ -19,14 +21,14 @@
                     HandleScript(args[1..args.Length]);
                 else if (args[0] == "l")
                     foreach (string line in File.ReadAllLines(args[1]))
-                        buffer.Add(line);
+                        _buffer.Add(line);
                 else throw new Exception();
             }
             catch
             {
                 // Reset the buffer if any error occurs.
                 Console.WriteLine("?");
-                buffer = [];
+                _buffer = [];
             }
         }
         while (true)
@@ -36,12 +38,12 @@
             if (appendMode)
                 HandleAppendMode(input);
             else try
-            {
-                HandleInput(input);
-                if (backupEnabled)
-                    File.WriteAllLines("sled.bak", buffer);
-            }
-            catch { Console.WriteLine('?'); }
+                {
+                    HandleInput(input);
+                    if (backupEnabled)
+                        File.WriteAllLines("sled.bak", _buffer);
+                }
+                catch { Console.WriteLine('?'); }
         }
     }
 
@@ -56,9 +58,9 @@
         if (input == ".") appendMode = false;
         else
         {
-            buffer.Add(input);
+            _buffer.Add(input);
             if (backupEnabled)
-                File.WriteAllLines("sled.bak", buffer);
+                File.WriteAllLines("sled.bak", _buffer);
         }
     }
 
@@ -69,18 +71,18 @@
             if (appendMode)
                 HandleAppendMode(line);
             else try
-            {
-                HandleInput(line);
-                if (backupEnabled)
-                    File.WriteAllLines("sled.bak", buffer);
-            }
-            catch { Console.WriteLine('?'); break; }
+                {
+                    HandleInput(line);
+                    if (backupEnabled)
+                        File.WriteAllLines("sled.bak", _buffer);
+                }
+                catch { Console.WriteLine('?'); break; }
         }
     }
 
     static void HandleInput(string input)
     {
-        string[] inputs = input.Split(" ");
+                string[] inputs = input.Split(" ");
         switch (inputs[0].ToLower())
         {
             default:
@@ -92,39 +94,39 @@
 
             case "i":
                 if (inputs.Length == 2)
-                    buffer.Insert(int.Parse(inputs[1]) - 1, "");
+                    _buffer.Insert(int.Parse(inputs[1]) - 1, "");
                 else
-                    buffer.Insert(int.Parse(inputs[1]) - 1, CombineFrom(inputs, 2));
+                    _buffer.Insert(int.Parse(inputs[1]) - 1, CombineFrom(inputs, 2));
                 break;
 
             case "d":
                 if (inputs.Length == 2)
-                    buffer.RemoveAt(int.Parse(inputs[1]) - 1);
+                    _buffer.RemoveAt(int.Parse(inputs[1]) - 1);
                 if (inputs.Length == 3)
                 {
-                    buffer.RemoveRange(int.Parse(inputs[1]) - 1, (int.Parse(inputs[2]) - int.Parse(inputs[1]) + 1));
+                    _buffer.RemoveRange(int.Parse(inputs[1]) - 1, (int.Parse(inputs[2]) - int.Parse(inputs[1]) + 1));
                 }
                 break;
 
             case "w":
-                File.WriteAllLines(CombineFrom(inputs, 1).Replace("\"", null), buffer); break;
+                File.WriteAllLines(CombineFrom(inputs, 1).Replace("\"", null), _buffer); break;
 
             case "l":
                 if (inputs.Length == 2)
                 {
                     if (inputs[1] == ".") inputs[1] = "1";
-                    Console.WriteLine($"[{int.Parse(inputs[1]):D4}]~" + buffer[int.Parse(inputs[1]) - 1]);
+                    Console.WriteLine($"[{int.Parse(inputs[1]):D4}]~" + _buffer[int.Parse(inputs[1]) - 1]);
                 }
                 else if (inputs.Length == 3)
                 {
                     if (inputs[1] == ".") inputs[1] = "1";
-                    if (inputs[2] == ".") inputs[2] = buffer.Count.ToString();
+                    if (inputs[2] == ".") inputs[2] = _buffer.Count.ToString();
                     for (int i = int.Parse(inputs[1]) - 1; i < int.Parse(inputs[2]); i++)
-                        Console.WriteLine($"[{i + 1:D4}]~" + buffer[i]);
+                        Console.WriteLine($"[{i + 1:D4}]~" + _buffer[i]);
                 }
                 else
-                    for (int i = 0; i < buffer.Count; i++)
-                        Console.WriteLine($"[{i + 1:D4}]~" + buffer[i]);
+                    for (int i = 0; i < _buffer.Count; i++)
+                        Console.WriteLine($"[{i + 1:D4}]~" + _buffer[i]);
                 break;
 
             case "q":
@@ -134,9 +136,9 @@
             case "a":
                 if (inputs.Length >= 3)
                 {
-                    string line = buffer[int.Parse(inputs[1]) - 1];
+                    string line = _buffer[int.Parse(inputs[1]) - 1];
                     line += CombineFrom(inputs, 2);
-                    buffer[int.Parse(inputs[1]) - 1] = line;
+                    _buffer[int.Parse(inputs[1]) - 1] = line;
                 }
                 else
                     appendMode = true;
@@ -148,18 +150,18 @@
                 break;
 
             case "wq":
-                File.WriteAllLines(CombineFrom(inputs, 1).Replace("\"", null), buffer);
+                File.WriteAllLines(CombineFrom(inputs, 1).Replace("\"", null), _buffer);
                 Environment.Exit(0);
                 break;
 
             case "c":
-                buffer = [.. File.ReadAllLines(CombineFrom(inputs, 1).Replace("\"", null))]; break;
+                _buffer = [.. File.ReadAllLines(CombineFrom(inputs, 1).Replace("\"", null))]; break;
 
             case "r":
-                buffer[int.Parse(inputs[1]) - 1] = CombineFrom(inputs, 2); break;
+                _buffer[int.Parse(inputs[1]) - 1] = CombineFrom(inputs, 2); break;
 
             case "s":
-                buffer[int.Parse(inputs[1]) - 1] = buffer[int.Parse(inputs[1]) - 1].Replace(oldValue: inputs[2], CombineFrom(inputs, 3));
+                _buffer[int.Parse(inputs[1]) - 1] = _buffer[int.Parse(inputs[1]) - 1].Replace(oldValue: inputs[2], CombineFrom(inputs, 3));
                 break;
 
             case "f":
@@ -168,9 +170,9 @@
                 else if (inputs[1] == "0") sc = StringComparison.CurrentCultureIgnoreCase;
                 else throw new Exception(); // Return error to main loop.
                 string content = CombineFrom(inputs, 2);
-                for (int i = 0; i < buffer.Count; i++)
+                for (int i = 0; i < _buffer.Count; i++)
                 {
-                    if (buffer[i].Contains(content, sc))
+                    if (_buffer[i].Contains(content, sc))
                         Console.WriteLine(i + 1);
                 }
                 break;
@@ -181,24 +183,23 @@
                 Console.WriteLine("Command Mode is the default mode and is indicated by a colon (:) in the input field.");
                 Console.WriteLine("You can exit Append Mode by entering a single period/full-stop (.).");
                 Console.WriteLine("q - Closes sled.");
-                Console.WriteLine("w [file path] - Write buffer to specifced file. Will create file if it doesn't exist.");
+                Console.WriteLine("w [file path] - Write buffer to specified file. Will create file if it doesn't exist.");
                 Console.WriteLine("wq [file path] - Equivalent to w and q.");
                 Console.WriteLine("b - Toggle Backup. Default is off/false.");
                 Console.WriteLine("a - Enter Append Mode.");
                 Console.WriteLine("a [line] [content] - Append content to the end of the line.");
-                Console.WriteLine("i [line] - Insert newline on specificed line in the buffer.");
+                Console.WriteLine("i [line] - Insert newline on specified line in the buffer.");
                 Console.WriteLine("i [line] [content] Insert content on specified line in the buffer.");
                 Console.WriteLine("d [line] - Delete line from buffer.");
-                Console.WriteLine("d [from line] [to line] - Deletes the specifed line range of lines.");
+                Console.WriteLine("d [from line] [to line] - Deletes the specified line range of lines.");
                 Console.WriteLine("r [line] [content] - Replace line in buffer with specified content.");
-                Console.WriteLine("s [line] [old content] [new content] - Replace all occurances of the old content with the new content in the specified line in the buffer.");
-                Console.WriteLine("c [file path] - Overwrite buffer with specifed file.");
+                Console.WriteLine("s [line] [old content] [new content] - Replace all occurrences of the old content with the new content in the specified line in the buffer.");
+                Console.WriteLine("c [file path] - Overwrite buffer with specified file.");
                 Console.WriteLine("l - List buffer.");
-                Console.WriteLine("l [line or . for line 1] - Print specifed line from the buffer.");
+                Console.WriteLine("l [line or . for line 1] - Print specified line from the buffer.");
                 Console.WriteLine("l [line or . for line 1] [line or . for all lines up to EOF] - Print specified range of lines from the buffer.");
                 Console.WriteLine("f [0 for case-insensitive or 1 for case-sensitive] [content] - Find and print the line numbers that contain the content.");
                 break;
-
         }
     }
 }
