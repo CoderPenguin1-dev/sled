@@ -8,12 +8,10 @@ internal static class ConfigFileReader
     {
         string configFilePath = string.Empty;
 
-        // Goes in this order of "power" in order of most to least:
-        // AppData Folder (Windows) or SLED_CONFIG_FILE (Linux) -> ~/.config/sled.conf (Linux) -> sled.conf
+        // Goes in this order of priority in order of most to least:
+        // SLED_CONFIG_FILE (Linux) -> sled.conf -> AppData Folder (Windows) or ~/.config/sled.conf (Linux)
         #region Check Config Paths
-        if (File.Exists("sled.conf"))
-            configFilePath = "sled.conf";
-
+        
         #region OS Specific Checks
         if (OperatingSystem.IsOSPlatform("Linux"))
         {
@@ -33,6 +31,8 @@ internal static class ConfigFileReader
                 configFilePath = Environment.ExpandEnvironmentVariables("%APPDATA%/sled.conf");
         }
         #endregion
+        if (File.Exists("sled.conf"))
+            configFilePath = "sled.conf";
         #endregion
         
         if (configFilePath == string.Empty)

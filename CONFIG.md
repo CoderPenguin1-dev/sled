@@ -1,24 +1,28 @@
 # sled Configuration
 
 ## Environment Variables (Linux Only)
+All of these will override the config.
 * SLED_CONFIG_FILE
    * The path to the file where the config file is. 
    * Overrides all other config paths.
 * SLED_BACKUP_FILE_PATH
    * The path to the folder where `sled.bak` will be saved to.
-   * Overrides the BackupFilePath config.
+* SLED_BACKUP_ENABLED
+  * Accepts True/False and true/false.
+  * Sets if the backup is enabled on startup.
 
 ## Configuration File
 Can use #'s to denote comments.
 **Layout:** `KEY PARAMETER`
 
-### Config File Locations
+### Default Config File Locations
 * sled.conf
   * In the working directory.
+  * Overides the user-wide config.
 * ~/.config/sled.conf
-  * Linux only.
+  * Linux only user-wide config.
 * %APPDATA%/sled.conf
-  * Windows only.
+  * Windows only user-wide config.
 
 ### Config Options
 * BackupEnabled [True/False] False

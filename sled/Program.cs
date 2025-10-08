@@ -35,12 +35,26 @@ public class Program
 
         if (Config.AppendModeOnStart)
             _appendModeEnabled = true;
+        
+        // Environment variable overrides.
         if (OperatingSystem.IsOSPlatform("Linux"))
         {
-            // Check if env variable SLED_BACKUP_FILE_PATH exists.
             string backupFilePathEnv = Environment.GetEnvironmentVariable("SLED_BACKUP_FILE_PATH");
             if (backupFilePathEnv != null)
-                Config.BackupFilePath = backupFilePathEnv;
+                if (Path.Exists(backupFilePathEnv))
+                    Config.BackupFilePath = backupFilePathEnv;
+                else
+                {
+                    Console.WriteLine("SLED_BACKUP_FILE_PATH: Path not found.");
+                    Environment.Exit(1);
+                }
+            string backupEnabledEnv = Environment.GetEnvironmentVariable("SLED_BACKUP_ENABLED");
+            if (backupEnabledEnv != null)
+                if (!bool.TryParse(backupEnabledEnv, out Config.BackupEnabled))
+                {
+                    Console.WriteLine("SLED_BACKUP_ENABLED: Invalid value given.");
+                    Environment.Exit(1);
+                }
         }
         #endregion
         if (args.Length > 0)
