@@ -9,9 +9,10 @@ internal static class ConfigFileReader
         string configFilePath = string.Empty;
 
         // Goes in this order of priority in order of most to least:
-        // SLED_CONFIG_FILE (Linux) -> sled.conf -> AppData Folder (Windows) or ~/.config/sled.conf (Linux)
+        // SLED_CONFIG_FILE -> sled.conf -> AppData Folder (Windows) or ~/.config/sled.conf (Linux)
         #region Check Config Paths
-        
+
+        #region OS Specific Paths
         // Linux user config folder check.
         if (OperatingSystem.IsLinux())
         {
@@ -19,30 +20,36 @@ internal static class ConfigFileReader
             if (homeFolder != null)
                 if (File.Exists($"{homeFolder}/.config/sled.conf"))
                     configFilePath = Environment.ExpandEnvironmentVariables($"{homeFolder}/.config/sled.conf");
-            
         }
+        
+        // Windows user appdata folder check.
+        // Currently untested.
+        if (OperatingSystem.IsWindows())
+        {
+            string appdataFolder = Environment.GetEnvironmentVariable("APPDATA");
+            if (File.Exists($"{appdataFolder}/sled.conf"))
+                configFilePath = $"{appdataFolder}/sled.conf";
+        }
+        #endregion
+        
+        if (File.Exists("sled.conf"))
+            configFilePath = "sled.conf";
+        #endregion
         
         string sledConfigFilePath = Environment.GetEnvironmentVariable("SLED_CONFIG_FILE");
         if (sledConfigFilePath != null)
             if (File.Exists(sledConfigFilePath))
                 configFilePath = sledConfigFilePath;
         
-        // Windows appdata check.
-        if (OperatingSystem.IsWindows())
-        {
-            if (File.Exists(Environment.ExpandEnvironmentVariables("%APPDATA%/sled.conf")))
-                configFilePath = Environment.ExpandEnvironmentVariables("%APPDATA%/sled.conf");
-        }
-        
-        if (File.Exists("sled.conf"))
-            configFilePath = "sled.conf";
-        #endregion
         
         if (configFilePath == string.Empty)
             return false;
-        
-        _configFile = File.ReadAllLines(configFilePath);
-        return true;
+        else
+        {
+            _configFile = File.ReadAllLines(configFilePath);
+            return true;
+            
+        }
     }
     
     internal static string GetKeyValue(string key)
