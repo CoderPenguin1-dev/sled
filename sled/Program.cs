@@ -37,7 +37,7 @@ public class Program
             _appendModeEnabled = true;
         
         // Environment variable overrides.
-        string backupFilePathEnv = Environment.GetEnvironmentVariable("SLED_BACKUP_FILE_PATH");
+        string backupFilePathEnv = Environment.GetEnvironmentVariable("SLED_BACKUP_FOLDER");
         if (backupFilePathEnv != null)
             if (Path.Exists(backupFilePathEnv))
                 Config.BackupFilePath = backupFilePathEnv;

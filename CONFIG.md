@@ -5,7 +5,7 @@ All of these will override the config.
 * SLED_CONFIG_FILE
    * The path to the file where the config file is. 
    * Read over all other config paths.
-* SLED_BACKUP_FILE_PATH
+* SLED_BACKUP_FOLDER
    * The path to the folder where `sled.bak` will be saved to.
 * SLED_BACKUP_ENABLED
   * Accepts True/False and true/false.
