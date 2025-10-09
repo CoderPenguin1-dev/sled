@@ -1,10 +1,10 @@
 # sled Configuration
 
-## Environment Variables (Linux Only)
+## Environment Variables
 All of these will override the config.
 * SLED_CONFIG_FILE
    * The path to the file where the config file is. 
-   * Overrides all other config paths.
+   * Read over all other config paths.
 * SLED_BACKUP_FILE_PATH
    * The path to the folder where `sled.bak` will be saved to.
 * SLED_BACKUP_ENABLED
@@ -16,6 +16,7 @@ Can use #'s to denote comments.
 **Layout:** `KEY PARAMETER`
 
 ### Default Config File Locations
+The local config will always be read over the user-wide configs.
 * sled.conf
   * In the working directory.
   * Overides the user-wide config.
