@@ -13,6 +13,7 @@ All of these will override the config.
 
 ## Configuration File
 Can use #'s to denote comments.
+
 **Layout:** `KEY PARAMETER`
 
 ### Default Config File Locations
