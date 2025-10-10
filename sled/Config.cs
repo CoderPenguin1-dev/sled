@@ -3,7 +3,8 @@ namespace sled;
 internal static class Config
 {
     /// <summary>
-    /// Enables the use of the buffer backup file. Can be changed during runtime via the backup (b) command.
+    /// Enables the use of the buffer backup file.
+    /// Can be changed during runtime via the backup (b) command.
     /// </summary>
     internal static bool BackupEnabled = false;
     
@@ -31,4 +32,10 @@ internal static class Config
     /// Show line numbers when using the list (l) command or when being listed by ListBufferOnLoad or ListBufferOnCopy.
     /// </summary>
     internal static bool ShowLineNumbersOnList = true;
+    
+    /// <summary>
+    /// Show verbose error messages instead of just a ?.
+    /// Can be changed during runtime via the verbose (v) command.
+    /// </summary>
+    internal static bool VerboseErrors = true;
 }

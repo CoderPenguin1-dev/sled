@@ -25,6 +25,8 @@ public class Program
                     Config.BackupFilePath = ConfigFileReader.GetKeyValue("BackupFilePath");
                 if (ConfigFileReader.GetKeyValue("ShowLineNumbersOnList") != string.Empty)
                     Config.ShowLineNumbersOnList = bool.Parse(ConfigFileReader.GetKeyValue("ShowLineNumbersOnList"));
+                if (ConfigFileReader.GetKeyValue("VerboseErrors") != string.Empty)
+                    Config.VerboseErrors = bool.Parse(ConfigFileReader.GetKeyValue("VerboseErrors"));
             }
             catch
             {
@@ -55,6 +57,7 @@ public class Program
             }
         #endregion
         
+        // Check what mode sled started in.
         if (args.Length > 0)
         {
             try
@@ -74,13 +77,13 @@ public class Program
                         for (int i = 0; i < _buffer.Count; i++)
                             ListLineFromIndex(_buffer.ToArray(), i);
                 }
-                
-                else throw new Exception();
+
+                else throw Exceptions.InvalidMode;
             }
-            catch
+            catch (Exception ex)
             {
                 // Reset the buffer if any error occurs.
-                Console.WriteLine("?");
+                Exceptions.HandleExceptions(ex);
                 _buffer = [];
             }
         }
@@ -91,13 +94,17 @@ public class Program
             string input = Console.ReadLine();
             if (_appendModeEnabled)
                 HandleAppendMode(input);
-            else try
+            else
+                try
                 {
                     HandleInput(input);
                     if (Config.BackupEnabled)
                         File.WriteAllLines($"{Config.BackupFilePath}sled.bak", _buffer);
                 }
-                catch { Console.WriteLine('?'); }
+                catch (Exception ex)
+                {
+                    Exceptions.HandleExceptions(ex);
+                }
         }
     }
 
@@ -134,13 +141,18 @@ public class Program
         {
             if (_appendModeEnabled)
                 HandleAppendMode(line);
-            else try
+            else
+                try
                 {
                     HandleInput(line);
                     if (Config.BackupEnabled)
                         File.WriteAllLines("sled.bak", _buffer);
                 }
-                catch { Console.WriteLine('?'); break; }
+                catch (Exception ex)
+                {
+                    Exceptions.HandleExceptions(ex);
+                    break;
+                }
         }
     }
 
@@ -150,8 +162,7 @@ public class Program
         switch (inputs[0].ToLower())
         {
             default:
-                Console.WriteLine("?");
-                break;
+                throw Exceptions.InvalidCommand;
 
             case "":
                 break;
@@ -249,6 +260,11 @@ public class Program
                         Console.WriteLine(i + 1);
                 }
                 break;
+            
+            case "v":
+                Config.VerboseErrors = !Config.VerboseErrors;
+                Console.WriteLine($"Verbose Errors: {Config.VerboseErrors}");
+                break;
 
             case "?":
                 Console.WriteLine($"Sharp Line-based EDitor v{typeof(Program).Assembly.GetName().Version}\n");
@@ -258,7 +274,7 @@ public class Program
                 Console.WriteLine("q - Closes sled.");
                 Console.WriteLine("w [absolute file path] - Write buffer to specified file. Will create file if it doesn't exist.");
                 Console.WriteLine("wq [absolute file path] - Equivalent to w and q.");
-                Console.WriteLine("b - Toggle Backup. Default is off/false.");
+                Console.WriteLine("b - Toggle buffer backup. Default is off/false.");
                 Console.WriteLine("a - Enter Append Mode.");
                 Console.WriteLine("a [line] [content] - Append content to the end of the line.");
                 Console.WriteLine("i [line] - Insert newline on specified line in the buffer.");
@@ -272,6 +288,7 @@ public class Program
                 Console.WriteLine("l [line or . for line 1] - Print specified line from the buffer.");
                 Console.WriteLine("l [line or . for line 1] [line or . for all lines up to EOF] - Print specified range of lines from the buffer.");
                 Console.WriteLine("f [0 for case-insensitive or 1 for case-sensitive] [content] - Find and print the line numbers that contain the content.");
+                Console.WriteLine("v - Toggle verbose errors. Default is on/true.");
                 break;
         }
     }

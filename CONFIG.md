@@ -40,3 +40,5 @@ The local config will always be read over the user-wide configs.
   * Ignored when running a script with either script mode (s and x).
 * ShowLineNumbersOnList [True/False] True
   * Show line numbers when using the list (l) command or when being listed by ListBufferOnLoad or ListBufferOnCopy.
+* VerboseErrors [True/False] True
+  * Show verbose error messages instead of a ?.

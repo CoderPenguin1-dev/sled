@@ -2,10 +2,34 @@ namespace sled;
 
 public static class Exceptions
 {
-    /* 
-     * TODO:
-     * * Add in verbose exception messages here.
-     * * Implement them in all places where errors are handled generically (shown as ? to the user) in 'Program.cs'.
-     * * Optionally replace other error handling with exceptions instead. Probably won't do this.
-     */
+    public static readonly Exception InvalidCommand = new("Invalid command.");
+    public static readonly Exception InvalidMode = new("Invalid mode.");
+
+    internal static void HandleExceptions(Exception ex)
+    {
+        if (Config.VerboseErrors)
+        {
+            string errorMessage;
+            switch (ex)
+            {
+                default:
+                    errorMessage = ex.Message;
+                    break;
+                
+                case FormatException:
+                    errorMessage = "Invalid argument(s).";
+                    break;
+                case FileNotFoundException:
+                    errorMessage = "File not found.";
+                    break;
+
+                case IndexOutOfRangeException or ArgumentOutOfRangeException:
+                    errorMessage = "Line number out of range.";
+                    break;
+            }
+
+            Console.WriteLine($"?: {errorMessage}");
+        }
+        else Console.WriteLine("?");
+    }
 }
