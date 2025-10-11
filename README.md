@@ -1,4 +1,4 @@
-# Sharp Line-based EDitor
+# Sharp Line EDitor
 
 sled is a CLI line editor, similar to UNIX's ed.
 

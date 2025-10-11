@@ -267,7 +267,7 @@ public class Program
                 break;
 
             case "?":
-                Console.WriteLine($"Sharp Line-based EDitor v{typeof(Program).Assembly.GetName().Version}\n");
+                Console.WriteLine($"Sharp Line EDitor v{typeof(Program).Assembly.GetName().Version}\n");
                 Console.WriteLine("Command Mode allows you to type in the below commands. Append Mode allows you to add to the buffer.");
                 Console.WriteLine("Command Mode is the default mode and is indicated by a colon (:) in the input field.");
                 Console.WriteLine("You can exit Append Mode by entering a single period/full-stop (.).");
