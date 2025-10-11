@@ -1,6 +1,6 @@
 # Sharp Line-based EDitor
 
-sled is a CLI line-based editor, similar to UNIX's ed.
+sled is a CLI line editor, similar to UNIX's ed.
 
 The main reason I made this was for fun, but I'm currently using it for Minty Launcher's publish script.
 
