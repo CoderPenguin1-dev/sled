@@ -13,20 +13,13 @@ public class Program
         {
             try
             {
-                if (ConfigFileReader.GetKeyValue("BackupEnabled") != string.Empty)
-                    Config.BackupEnabled = bool.Parse(ConfigFileReader.GetKeyValue("BackupEnabled"));
-                if (ConfigFileReader.GetKeyValue("ListBufferOnCopy") != string.Empty)
-                    Config.ListBufferOnCopy = bool.Parse(ConfigFileReader.GetKeyValue("ListBufferOnCopy"));
-                if (ConfigFileReader.GetKeyValue("ListBufferOnLoad") != string.Empty)
-                    Config.ListBufferOnLoad = bool.Parse(ConfigFileReader.GetKeyValue("ListBufferOnLoad"));
-                if (ConfigFileReader.GetKeyValue("AppendModeOnStart") != string.Empty)
-                    Config.AppendModeOnStart = bool.Parse(ConfigFileReader.GetKeyValue("AppendModeOnStart"));
-                if (ConfigFileReader.GetKeyValue("BackupFilePath") != string.Empty)
-                    Config.BackupFilePath = ConfigFileReader.GetKeyValue("BackupFilePath");
-                if (ConfigFileReader.GetKeyValue("ShowLineNumbersOnList") != string.Empty)
-                    Config.ShowLineNumbersOnList = bool.Parse(ConfigFileReader.GetKeyValue("ShowLineNumbersOnList"));
-                if (ConfigFileReader.GetKeyValue("VerboseErrors") != string.Empty)
-                    Config.VerboseErrors = bool.Parse(ConfigFileReader.GetKeyValue("VerboseErrors"));
+                ConfigFileReader.SetConfigOption("BackupEnabled", ref Config.BackupEnabled);
+                ConfigFileReader.SetConfigOption("ListBufferOnCopy", ref Config.ListBufferOnCopy);
+                ConfigFileReader.SetConfigOption("ListBufferOnLoad", ref Config.ListBufferOnLoad);
+                ConfigFileReader.SetConfigOption("AppendModeOnStart", ref Config.AppendModeOnStart);
+                ConfigFileReader.SetConfigOption("BackupFilePath", ref Config.BackupFilePath);
+                ConfigFileReader.SetConfigOption("ShowLineNumbersOnList", ref Config.ShowLineNumbersOnList);
+                ConfigFileReader.SetConfigOption("VerboseErrors", ref Config.VerboseErrors);
             }
             catch
             {
@@ -110,7 +103,7 @@ public class Program
 
     private static string CombineFrom(string[] array, int fromIndex)
     {
-        string output = string.Join(" ", array[fromIndex..array.Length]);
+        string output = string.Join(" ", array[fromIndex..]);
         return output;
     }
     
@@ -208,7 +201,8 @@ public class Program
 
             case "q":
                 if (File.Exists($"{Config.BackupFilePath}sled.bak")) File.Delete($"{Config.BackupFilePath}sled.bak");
-                Environment.Exit(0); break;
+                Environment.Exit(0); 
+                break;
 
             case "a":
                 if (inputs.Length >= 3)
@@ -217,8 +211,7 @@ public class Program
                     line += CombineFrom(inputs, 2);
                     _buffer[int.Parse(inputs[1]) - 1] = line;
                 }
-                else
-                    _appendModeEnabled = true;
+                else _appendModeEnabled = true;
                 break;
 
             case "b":

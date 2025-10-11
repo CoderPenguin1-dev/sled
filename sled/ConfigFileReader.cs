@@ -4,6 +4,11 @@ internal static class ConfigFileReader
 {
     private static string[] _configFile = [];
 
+    /// <summary>
+    /// Finds and reads the config file.
+    /// Must be called before any other operation with the config file is done.
+    /// </summary>
+    /// <returns>Returns true if a config could be found; false if none could be found.</returns>
     internal static bool InitConfigFile()
     {
         string configFilePath = string.Empty;
@@ -44,15 +49,15 @@ internal static class ConfigFileReader
         
         if (configFilePath == string.Empty)
             return false;
-        else
-        {
-            _configFile = File.ReadAllLines(configFilePath);
-            return true;
-            
-        }
+        
+        _configFile = File.ReadAllLines(configFilePath);
+        return true;
     }
     
-    internal static string GetKeyValue(string key)
+
+    /// <param name="key">Name of key in config file.</param>
+    /// <returns>The value of the specified key.</returns>
+    private static string GetKeyValue(string key)
     {
         foreach (string line in _configFile)
         {
@@ -63,5 +68,21 @@ internal static class ConfigFileReader
                 return line.Split(" ")[1];
         }
         return string.Empty;
+    }
+    
+    /// <param name="key">Key in config file.</param>
+    /// <param name="configOption">Boolean-based option to set.</param>
+    internal static void SetConfigOption(string key, ref bool configOption)
+    {
+        if (GetKeyValue(key) != string.Empty)
+            configOption = bool.Parse(GetKeyValue(key));
+    }
+    
+    /// <param name="key">Key in config file.</param>
+    /// <param name="configOption">String-based option to set.</param>
+    internal static void SetConfigOption(string key, ref string configOption)
+    {
+        if (GetKeyValue(key) != string.Empty)
+            configOption = GetKeyValue(key);
     }
 }
