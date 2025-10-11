@@ -14,7 +14,7 @@ All of these will override the config.
 ## Configuration File
 Can use #'s to denote comments.
 
-**Layout:** `KEY PARAMETER`
+**Config Option Layout:** `KEY PARAMETER`
 
 ### Default Config File Locations
 The local config will always be read over the user-wide configs.
@@ -27,10 +27,12 @@ The local config will always be read over the user-wide configs.
   * Windows only user-wide config.
 
 ### Config Options
+`KEY [ACCEPTED PARAMETERS] DEFAULT PARAMETER`
 * BackupEnabled [True/False] False
   * Sets if the backup is enabled on startup.
 * BackupFilePath [Absolute Path To Folder] Working Directory
   * Sets the path to the folder where `sled.bak` will be saved to.
+  * Must end with a `/` oor `\`, depending on operating system.
 * ListBufferOnCopy [True/False] False
   * Lists the buffer when using the copy (c) command.
 * ListBufferOnLoad [True/False] False
@@ -40,5 +42,8 @@ The local config will always be read over the user-wide configs.
   * Ignored when running a script with either script mode (s and x).
 * ShowLineNumbersOnList [True/False] True
   * Show line numbers when using the list (l) command or when being listed by ListBufferOnLoad or ListBufferOnCopy.
-* VerboseErrors [True/False] True
-  * Show verbose error messages instead of a ?.
+* VerboseOutput [True/False] True
+  * Show verbose output messages instead of basic information.
+    * Full error messages instead of just `?`.
+* ReportBytesWritten [True/False] True
+  * Reports the amount of bytes written when writing the buffer to a file.

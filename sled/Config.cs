@@ -37,5 +37,10 @@ internal static class Config
     /// Show verbose error messages instead of just a ?.
     /// Can be changed during runtime via the verbose (v) command.
     /// </summary>
-    internal static bool VerboseErrors = true;
+    internal static bool VerboseOutput = true;
+
+    /// <summary>
+    /// Reports the amount of bytes written on write commands.
+    /// </summary>
+    internal static bool ReportBytesWritten = true;
 }

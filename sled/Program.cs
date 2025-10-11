@@ -19,7 +19,8 @@ public class Program
                 ConfigFileReader.SetConfigOption("AppendModeOnStart", ref Config.AppendModeOnStart);
                 ConfigFileReader.SetConfigOption("BackupFilePath", ref Config.BackupFilePath);
                 ConfigFileReader.SetConfigOption("ShowLineNumbersOnList", ref Config.ShowLineNumbersOnList);
-                ConfigFileReader.SetConfigOption("VerboseErrors", ref Config.VerboseErrors);
+                ConfigFileReader.SetConfigOption("VerboseOutput", ref Config.VerboseOutput);
+                ConfigFileReader.SetConfigOption("ReportBytesWritten", ref Config.ReportBytesWritten);
             }
             catch
             {
@@ -114,6 +115,17 @@ public class Program
         else  Console.Write(buffer[index]);
     }
 
+    private static void WriteToFile(string filepath)
+    {
+        File.WriteAllLines(filepath, _buffer);
+        
+        if (!Config.ReportBytesWritten) return;
+        var bytesWritten = File.ReadAllBytes(filepath).LongLength;
+        if (Config.VerboseOutput)
+            Console.WriteLine($"{bytesWritten} bytes written.");
+        else Console.WriteLine(bytesWritten);
+    }
+
     #region  Handlers
     private static void HandleAppendMode(string input)
     {
@@ -139,7 +151,7 @@ public class Program
                 {
                     HandleInput(line);
                     if (Config.BackupEnabled)
-                        File.WriteAllLines("sled.bak", _buffer);
+                        File.WriteAllLines($"{Config.BackupFilePath}sled.bak", _buffer);
                 }
                 catch (Exception ex)
                 {
@@ -177,7 +189,8 @@ public class Program
                 break;
 
             case "w":
-                File.WriteAllLines(CombineFrom(inputs, 1).Replace("\"", null), _buffer); break;
+                WriteToFile(CombineFrom(inputs, 1).Replace("\"", null));
+                break;
 
             case "l":
                 if (inputs.Length == 2)
@@ -192,11 +205,10 @@ public class Program
                     for (int i = int.Parse(inputs[1]) - 1; i < int.Parse(inputs[2]); i++)
                         ListLineFromIndex(_buffer.ToArray(), i);
                 }
-                else
-                    for (int i = 0; i < _buffer.Count; i++)
-                    {
-                        ListLineFromIndex(_buffer.ToArray(), i);
-                    }
+                else for (int i = 0; i < _buffer.Count; i++)
+                {
+                    ListLineFromIndex(_buffer.ToArray(), i);
+                }
                 break;
 
             case "q":
@@ -220,8 +232,7 @@ public class Program
                 break;
 
             case "wq":
-                if (File.Exists($"{Config.BackupFilePath}sled.bak")) File.Delete($"{Config.BackupFilePath}sled.bak");
-                File.WriteAllLines(CombineFrom(inputs, 1).Replace("\"", null), _buffer);
+                WriteToFile(CombineFrom(inputs, 1).Replace("\"", null));
                 Environment.Exit(0);
                 break;
 
@@ -242,6 +253,7 @@ public class Program
                 break;
 
             case "f":
+            {
                 StringComparison sc;
                 if (inputs[1] == "1") sc = StringComparison.CurrentCulture;
                 else if (inputs[1] == "0") sc = StringComparison.CurrentCultureIgnoreCase;
@@ -252,11 +264,13 @@ public class Program
                     if (_buffer[i].Contains(content, sc))
                         Console.WriteLine(i + 1);
                 }
+
                 break;
+            }
             
             case "v":
-                Config.VerboseErrors = !Config.VerboseErrors;
-                Console.WriteLine($"Verbose Errors: {Config.VerboseErrors}");
+                Config.VerboseOutput = !Config.VerboseOutput;
+                Console.WriteLine($"Verbose Output: {Config.VerboseOutput}");
                 break;
 
             case "?":

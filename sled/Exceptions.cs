@@ -7,7 +7,7 @@ public static class Exceptions
 
     internal static void HandleExceptions(Exception ex)
     {
-        if (Config.VerboseErrors)
+        if (Config.VerboseOutput)
         {
             string errorMessage;
             switch (ex)
