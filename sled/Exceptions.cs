@@ -4,7 +4,8 @@ public static class Exceptions
 {
     public static readonly Exception InvalidCommand = new("Invalid command.");
     public static readonly Exception InvalidMode = new("Invalid mode.");
-
+    public static readonly Exception InvalidParameter = new("Invalid argument(s).");
+    
     internal static void HandleExceptions(Exception ex)
     {
         if (Config.VerboseOutput)
@@ -23,6 +24,7 @@ public static class Exceptions
                     errorMessage = "File not found.";
                     break;
 
+                // Equiv. to InvalidParameter.
                 case IndexOutOfRangeException or ArgumentOutOfRangeException:
                     errorMessage = "Line number out of range.";
                     break;
