@@ -91,7 +91,8 @@ internal static class IO
                 break;
 
             case "q":
-                if (File.Exists($"{Config.BackupFilePath}sled.bak")) File.Delete($"{Config.BackupFilePath}sled.bak");
+                if (File.Exists($"{Config.BackupFilePath}sled.bak")) 
+                    File.Delete($"{Config.BackupFilePath}sled.bak");
                 Environment.Exit(0);
                 break;
 
@@ -103,7 +104,6 @@ internal static class IO
                     Buffer.buffer[int.Parse(inputs[1]) - 1] = line;
                 }
                 else Buffer.appendModeEnabled = true;
-
                 break;
 
             case "b":
@@ -113,6 +113,8 @@ internal static class IO
 
             case "wq":
                 Buffer.WriteToFile(inputs.JoinFrom(1).Replace("\"", null));
+                if (File.Exists($"{Config.BackupFilePath}sled.bak")) 
+                    File.Delete($"{Config.BackupFilePath}sled.bak");
                 Environment.Exit(0);
                 break;
 
