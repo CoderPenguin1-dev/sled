@@ -10,26 +10,13 @@ public static class Exceptions
     {
         if (Config.VerboseOutput)
         {
-            string errorMessage;
-            switch (ex)
+            string errorMessage = ex switch
             {
-                default:
-                    errorMessage = ex.Message;
-                    break;
-                
-                // Equiv. to InvalidParameter.
-                case FormatException:
-                    errorMessage = "Invalid argument(s).";
-                    break;
-                
-                case FileNotFoundException:
-                    errorMessage = "File not found.";
-                    break;
-
-                case IndexOutOfRangeException or ArgumentOutOfRangeException:
-                    errorMessage = "Line number out of range.";
-                    break;
-            }
+                FormatException => "Invalid argument(s).", // Equiv. to InvalidParameter.
+                FileNotFoundException => "File not found.",
+                IndexOutOfRangeException or ArgumentOutOfRangeException => "Index out of range.",
+                _ => ex.Message
+            };
 
             Console.WriteLine($"?: {errorMessage}");
         }
