@@ -3,14 +3,13 @@
 ##
 ## Get latest from https://github.com/github/gitignore/blob/master/VisualStudio.gitignore
 
-# Publish Files
-publish.bat
-sled-FrameworkDependent-win64.zip
-sled-FrameworkDependent-win32.zip
-sled-SelfContained-win64.zip
-sled-SelfContained-win32.zip
-sled-FrameworkDependent-amd64.tar
-sled-SelfContained-amd64.tar
+# sled Publish Files
+publish.sh
+/publish/
+
+#
+#   RIDER
+#
 
 # Default ignored files
 /shelf/
@@ -26,6 +25,10 @@ sled-SelfContained-amd64.tar
 /dataSources/
 /dataSources.local.xml
 /.idea/
+
+#
+#    Visual Studio
+#
 
 # User-specific files
 *.rsuser
