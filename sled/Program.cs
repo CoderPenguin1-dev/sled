@@ -30,7 +30,7 @@ public class Program
             Buffer.AppendModeEnabled = true;
         
         // Environment variable overrides.
-        string backupFilePathEnv = Environment.GetEnvironmentVariable("SLED_BACKUP_FOLDER");
+        string? backupFilePathEnv = Environment.GetEnvironmentVariable("SLED_BACKUP_FOLDER");
         if (backupFilePathEnv != null)
             if (Path.Exists(backupFilePathEnv))
                 Config.BackupFilePath = backupFilePathEnv;
@@ -39,7 +39,7 @@ public class Program
                 Console.WriteLine("SLED_BACKUP_FILE_PATH: Path not found.");
                 Environment.Exit(1);
             }
-        string backupEnabledEnv = Environment.GetEnvironmentVariable("SLED_BACKUP_ENABLED");
+        string? backupEnabledEnv = Environment.GetEnvironmentVariable("SLED_BACKUP_ENABLED");
         if (backupEnabledEnv != null)
             if (!bool.TryParse(backupEnabledEnv, out Config.BackupEnabled))
             {

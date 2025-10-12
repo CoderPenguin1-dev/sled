@@ -21,7 +21,7 @@ internal static class ConfigFileReader
         // Linux user config folder check.
         if (OperatingSystem.IsLinux())
         {
-            string homeFolder = Environment.GetEnvironmentVariable("HOME");
+            string? homeFolder = Environment.GetEnvironmentVariable("HOME");
             if (homeFolder != null)
                 if (File.Exists($"{homeFolder}/.config/sled.conf"))
                     configFilePath = Environment.ExpandEnvironmentVariables($"{homeFolder}/.config/sled.conf");
@@ -31,9 +31,10 @@ internal static class ConfigFileReader
         // Currently untested.
         if (OperatingSystem.IsWindows())
         {
-            string appdataFolder = Environment.GetEnvironmentVariable("APPDATA");
-            if (File.Exists($"{appdataFolder}/sled.conf"))
-                configFilePath = $"{appdataFolder}/sled.conf";
+            string? appdataFolder = Environment.GetEnvironmentVariable("APPDATA");
+            if (appdataFolder != null)
+                if (File.Exists($"{appdataFolder}/sled.conf"))
+                    configFilePath = $"{appdataFolder}/sled.conf";
         }
         #endregion
         
@@ -41,7 +42,7 @@ internal static class ConfigFileReader
             configFilePath = "sled.conf";
         #endregion
         
-        string sledConfigFilePath = Environment.GetEnvironmentVariable("SLED_CONFIG_FILE");
+        string? sledConfigFilePath = Environment.GetEnvironmentVariable("SLED_CONFIG_FILE");
         if (sledConfigFilePath != null)
             if (File.Exists(sledConfigFilePath))
                 configFilePath = sledConfigFilePath;
