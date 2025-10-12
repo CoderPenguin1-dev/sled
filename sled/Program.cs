@@ -2,9 +2,6 @@
 
 public class Program
 {
-    private static List<string> _buffer = [];
-    private static bool _appendModeEnabled = false;
-
     public static void Main(string[] args)
     {
         #region Config
@@ -30,7 +27,7 @@ public class Program
         }
 
         if (Config.AppendModeOnStart)
-            _appendModeEnabled = true;
+            Buffer.appendModeEnabled = true;
         
         // Environment variable overrides.
         string backupFilePathEnv = Environment.GetEnvironmentVariable("SLED_BACKUP_FOLDER");
@@ -66,9 +63,9 @@ public class Program
                 else if (args[0] == "l")
                 {
                     foreach (string line in File.ReadAllLines(args[1]))
-                        _buffer.Add(line);
+                        Buffer.buffer.Add(line);
                     if (Config.ListBufferOnLoad)
-                        for (int i = 0; i < _buffer.Count; i++)
+                        for (int i = 0; i < Buffer.buffer.Count; i++)
                             Buffer.ListLineFromIndex(i);
                 }
 
@@ -78,23 +75,23 @@ public class Program
             {
                 // Reset the buffer if any error occurs.
                 Exceptions.HandleExceptions(ex);
-                _buffer = [];
+                Buffer.buffer.Clear();
             }
         }
         
         // Main loop.
         while (true)
         {
-            if (!_appendModeEnabled) Console.Write(':');
+            if (!Buffer.appendModeEnabled) Console.Write(':');
             string input = Console.ReadLine();
-            if (_appendModeEnabled)
+            if (Buffer.appendModeEnabled)
                 IO.HandleAppendMode(input);
             else
                 try
                 {
                     IO.HandleCommands(input);
                     if (Config.BackupEnabled)
-                        File.WriteAllLines($"{Config.BackupFilePath}sled.bak", _buffer);
+                        File.WriteAllLines($"{Config.BackupFilePath}sled.bak", Buffer.buffer);
                 }
                 catch (Exception ex)
                 {

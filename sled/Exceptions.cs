@@ -17,14 +17,15 @@ public static class Exceptions
                     errorMessage = ex.Message;
                     break;
                 
+                // Equiv. to InvalidParameter.
                 case FormatException:
                     errorMessage = "Invalid argument(s).";
                     break;
+                
                 case FileNotFoundException:
                     errorMessage = "File not found.";
                     break;
 
-                // Equiv. to InvalidParameter.
                 case IndexOutOfRangeException or ArgumentOutOfRangeException:
                     errorMessage = "Line number out of range.";
                     break;
