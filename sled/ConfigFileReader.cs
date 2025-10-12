@@ -56,7 +56,7 @@ internal static class ConfigFileReader
     
 
     /// <param name="key">Name of key in config file.</param>
-    /// <returns>The value of the specified key.</returns>
+    /// <returns>The string value of the specified key; string.Empty if no key was found.</returns>
     private static string GetKeyValue(string key)
     {
         foreach (string line in _configFile)
