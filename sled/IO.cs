@@ -108,7 +108,9 @@ internal static class IO
 
             case "b":
                 Config.BackupEnabled = !Config.BackupEnabled;
-                Console.WriteLine($"Backup Buffer: {Config.BackupEnabled}");
+                if (Config.VerboseOutput)
+                    Console.WriteLine($"Backup Buffer: {Config.BackupEnabled}");
+                else Console.WriteLine(Config.BackupEnabled);
                 break;
 
             case "wq":
@@ -154,7 +156,9 @@ internal static class IO
 
             case "v":
                 Config.VerboseOutput = !Config.VerboseOutput;
-                Console.WriteLine($"Verbose Output: {Config.VerboseOutput}");
+                if (Config.VerboseOutput)
+                    Console.WriteLine($"Verbose Output: {Config.VerboseOutput}");
+                else Console.WriteLine(Config.VerboseOutput);
                 break;
 
             case "?":
