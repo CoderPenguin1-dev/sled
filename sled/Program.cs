@@ -27,7 +27,7 @@ public class Program
         }
 
         if (Config.AppendModeOnStart)
-            Buffer.appendModeEnabled = true;
+            Buffer.AppendModeEnabled = true;
         
         // Environment variable overrides.
         string backupFilePathEnv = Environment.GetEnvironmentVariable("SLED_BACKUP_FOLDER");
@@ -63,9 +63,9 @@ public class Program
                 else if (args[0] == "l")
                 {
                     foreach (string line in File.ReadAllLines(args[1]))
-                        Buffer.buffer.Add(line);
+                        Buffer.BufferLines.Add(line);
                     if (Config.ListBufferOnLoad)
-                        for (int i = 0; i < Buffer.buffer.Count; i++)
+                        for (int i = 0; i < Buffer.BufferLines.Count; i++)
                             Buffer.ListLineFromIndex(i);
                 }
 
@@ -73,25 +73,25 @@ public class Program
             }
             catch (Exception ex)
             {
-                // Reset the buffer if any error occurs.
+                // Reset the BufferLines if any error occurs.
                 Exceptions.HandleExceptions(ex);
-                Buffer.buffer.Clear();
+                Buffer.BufferLines.Clear();
             }
         }
         
         // Main loop.
         while (true)
         {
-            if (!Buffer.appendModeEnabled) Console.Write(':');
+            if (!Buffer.AppendModeEnabled) Console.Write(':');
             string input = Console.ReadLine();
-            if (Buffer.appendModeEnabled)
+            if (Buffer.AppendModeEnabled)
                 IO.HandleAppendMode(input);
             else
                 try
                 {
                     IO.HandleCommands(input);
                     if (Config.BackupEnabled)
-                        File.WriteAllLines($"{Config.BackupFilePath}sled.bak", Buffer.buffer);
+                        File.WriteAllLines($"{Config.BackupFilePath}sled.bak", Buffer.BufferLines);
                 }
                 catch (Exception ex)
                 {

@@ -3,18 +3,18 @@ namespace sled;
 internal static class Config
 {
     /// <summary>
-    /// Enables the use of the buffer backup file.
+    /// Enables the use of the BufferLines backup file.
     /// Can be changed during runtime via the backup (b) command.
     /// </summary>
     internal static bool BackupEnabled = false;
     
     /// <summary>
-    /// Lists the buffer when using the copy (c) command.
+    /// Lists the BufferLines when using the copy (c) command.
     /// </summary>
     internal static bool ListBufferOnCopy = false;
     
     /// <summary>
-    /// Lists the buffer when loading a file with the load (l) mode.
+    /// Lists the BufferLines when loading a file with the load (l) mode.
     /// </summary>
     internal static bool ListBufferOnLoad = false;
     
