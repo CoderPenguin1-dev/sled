@@ -91,6 +91,8 @@ internal static class IO
                 break;
 
             case "q":
+                if (inputs.Length == 2)
+                    Buffer.WriteToFile(inputs.JoinFrom(1).Replace("\"", null));
                 if (File.Exists($"{Config.BackupFilePath}sled.bak")) 
                     File.Delete($"{Config.BackupFilePath}sled.bak");
                 Environment.Exit(0);
@@ -111,13 +113,6 @@ internal static class IO
                 if (Config.VerboseOutput)
                     Console.WriteLine($"Backup Buffer: {Config.BackupEnabled}");
                 else Console.WriteLine(Config.BackupEnabled);
-                break;
-
-            case "wq":
-                Buffer.WriteToFile(inputs.JoinFrom(1).Replace("\"", null));
-                if (File.Exists($"{Config.BackupFilePath}sled.bak")) 
-                    File.Delete($"{Config.BackupFilePath}sled.bak");
-                Environment.Exit(0);
                 break;
 
             case "c":
@@ -167,8 +162,8 @@ internal static class IO
                 Console.WriteLine("Command Mode is the default mode and is indicated by a colon (:) in the input field.");
                 Console.WriteLine("You can exit Append Mode by entering a single period/full-stop (.).");
                 Console.WriteLine("q - Closes sled.");
+                Console.WriteLine("q [absolute file path] - Equivalent to w and q.");
                 Console.WriteLine("w [absolute file path] - Write BufferLines to specified file. Will create file if it doesn't exist.");
-                Console.WriteLine("wq [absolute file path] - Equivalent to w and q.");
                 Console.WriteLine("b - Toggle BufferLines backup. Default is off/false.");
                 Console.WriteLine("a - Enter Append Mode.");
                 Console.WriteLine("a [line] [content] - Append content to the end of the line.");
