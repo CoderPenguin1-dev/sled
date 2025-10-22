@@ -158,25 +158,25 @@ internal static class IO
 
             case "?":
                 Console.WriteLine($"Sharp Line EDitor v{typeof(Program).Assembly.GetName().Version}\n");
-                Console.WriteLine("Command Mode allows you to type in the below commands. Append Mode allows you to add to the BufferLines.");
+                Console.WriteLine("Command Mode allows you to type in the below commands. Append Mode allows you to add to the buffer.");
                 Console.WriteLine("Command Mode is the default mode and is indicated by a colon (:) in the input field.");
                 Console.WriteLine("You can exit Append Mode by entering a single period/full-stop (.).");
                 Console.WriteLine("q - Closes sled.");
                 Console.WriteLine("q [absolute file path] - Equivalent to w and q.");
-                Console.WriteLine("w [absolute file path] - Write BufferLines to specified file. Will create file if it doesn't exist.");
-                Console.WriteLine("b - Toggle BufferLines backup. Default is off/false.");
+                Console.WriteLine("w [absolute file path] - Write buffer to specified file. Will create file if it doesn't exist.");
+                Console.WriteLine("b - Toggle the backup. Default is off/false.");
                 Console.WriteLine("a - Enter Append Mode.");
                 Console.WriteLine("a [line] [content] - Append content to the end of the line.");
-                Console.WriteLine("i [line] - Insert newline on specified line in the BufferLines.");
-                Console.WriteLine("i [line] [content] Insert content on specified line in the BufferLines.");
-                Console.WriteLine("d [line] - Delete line from BufferLines.");
+                Console.WriteLine("i [line] - Insert newline on specified line in the buffer.");
+                Console.WriteLine("i [line] [content] Insert content on specified line in the buffer.");
+                Console.WriteLine("d [line] - Delete line from buffer.");
                 Console.WriteLine("d [from line] [to line] - Deletes the specified line range of lines.");
-                Console.WriteLine("r [line] [content] - Replace line in BufferLines with specified content.");
-                Console.WriteLine("s [line] [old content] [new content] - Replace all occurrences of the old content with the new content in the specified line in the BufferLines.");
-                Console.WriteLine("c [absolute file path] - Overwrite BufferLines with specified file.");
-                Console.WriteLine("l - List BufferLines.");
-                Console.WriteLine("l [line or . for line 1] - Print specified line from the BufferLines.");
-                Console.WriteLine("l [line or . for line 1] [line or . for all lines up to EOF] - Print specified range of lines from the BufferLines.");
+                Console.WriteLine("r [line] [content] - Replace line in the buffer with specified content.");
+                Console.WriteLine("s [line] [old content] [new content] - Replace all occurrences of the old content with the new content in the specified line in the buffer.");
+                Console.WriteLine("c [absolute file path] - Overwrite the buffer with specified file.");
+                Console.WriteLine("l - List the buffer.");
+                Console.WriteLine("l [line or . for line 1] - Print specified line from the buffer.");
+                Console.WriteLine("l [line or . for line 1] [line or . for all lines up to EOF] - Print specified range of lines from the buffer.");
                 Console.WriteLine("f [0 for case-insensitive or 1 for case-sensitive] [content] - Find and print the line numbers that contain the content.");
                 Console.WriteLine("v - Toggle verbose errors. Default is on/true.");
                 break;
