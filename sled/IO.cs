@@ -178,7 +178,7 @@ internal static class IO
                 Console.WriteLine("l [line or . for line 1] - Print specified line from the buffer.");
                 Console.WriteLine("l [line or . for line 1] [line or . for all lines up to EOF] - Print specified range of lines from the buffer.");
                 Console.WriteLine("f [0 for case-insensitive or 1 for case-sensitive] [content] - Find and print the line numbers that contain the content.");
-                Console.WriteLine("v - Toggle verbose errors. Default is on/true.");
+                Console.WriteLine("v - Toggle verbose output. Default is on/true.");
                 break;
         }
     }
