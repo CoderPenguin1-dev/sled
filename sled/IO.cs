@@ -91,12 +91,20 @@ internal static class IO
                 break;
 
             case "q":
-                if (inputs.Length == 2)
+                if (inputs.Length >= 2)
                     Buffer.WriteToFile(inputs.JoinFrom(1).Replace("\"", null));
                 if (File.Exists($"{Config.BackupFilePath}sled.bak")) 
                     File.Delete($"{Config.BackupFilePath}sled.bak");
                 Environment.Exit(0);
                 break;
+
+            case "k":
+            {
+                int lineNumber = int.Parse(inputs[1]) - 1;
+                string line = Buffer.BufferLines[lineNumber];
+                Buffer.BufferLines[lineNumber] = line.Insert(int.Parse(inputs[2]) - 1, inputs.JoinFrom(3));
+                break;
+            }
 
             case "a":
                 if (inputs.Length >= 3)
@@ -169,6 +177,7 @@ internal static class IO
                 Console.WriteLine("a [line] [content] - Append content to the end of the line.");
                 Console.WriteLine("i [line] - Insert newline on specified line in the buffer.");
                 Console.WriteLine("i [line] [content] Insert content on specified line in the buffer.");
+                Console.WriteLine("k [line] [character] [content] Insert content at the specified character number in the line in the buffer.");
                 Console.WriteLine("d [line] - Delete line from buffer.");
                 Console.WriteLine("d [from line] [to line] - Deletes the specified line range of lines.");
                 Console.WriteLine("r [line] [content] - Replace line in the buffer with specified content.");
