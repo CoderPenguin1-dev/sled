@@ -26,7 +26,7 @@ Hello, World!
 Lorem Ipsum
 .
 r 3 Hello, World!
-wq test.txt
+q test.txt
 ```
 Saved as `commands.txt`.
 ```
@@ -35,7 +35,7 @@ sled s commands.txt
 
 ## Example of passing commands as parameters.
 ```
-sled x a "Hello, World!" "Hello, World!" "Lorem Ipsum" . "r 3 Hello, World!" "wq test.txt"
+sled x a "Hello, World!" "Hello, World!" "Lorem Ipsum" . "r 3 Hello, World!" "q test.txt"
 ```
 
 # Building
